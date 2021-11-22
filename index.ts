@@ -1,14 +1,15 @@
-/*
-import * as dotenv from "dotenv";
-import initializeServer from "./server/index";
-import initializeMongoDBServer from "./database/index";
+require("dotenv").config();
+const { initializeServer } = require("./server/index");
+const { initializeMongoDBServer } = require("./database/index");
 
-dotenv.config();
-
-const port: number = process.env.PORT ?? process.env.LOCAL_PORT ?? 5000;
+const port /*: number | string */ =
+  process.env.PORT ?? process.env.LOCAL_PORT ?? 5000;
 
 (async () => {
-  await initializeServer(port);
-  await initializeMongoDBServer(process.env.MONGODB_STRING);
+  try {
+    await initializeServer(port);
+    await initializeMongoDBServer(process.env.MONGODB_STRING);
+  } catch (error) {
+    process.exit(1);
+  }
 })();
-*/
