@@ -3,6 +3,7 @@ module.exports = {
     commonjs: true,
     es2021: true,
     node: true,
+    jest: true,
   },
   extends: ["airbnb-base", "airbnb-typescript/base", "prettier"],
   parser: "@typescript-eslint/parser",
@@ -10,7 +11,7 @@ module.exports = {
     ecmaVersion: 13,
     sourceType: "module",
     tsconfigRootDir: __dirname,
-    project: ["./tsconfig.json"],
+    project: "./tsconfig.json",
   },
   plugins: ["@typescript-eslint"],
   rules: {
@@ -21,4 +22,5 @@ module.exports = {
     "no-debugger": "off",
     "no-console": "off",
   },
+  ignorePatterns: [".eslintrc.js", "./dist", "/*.config.js", "/*.config.cjs"],
 };
