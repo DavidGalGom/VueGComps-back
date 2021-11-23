@@ -3,11 +3,12 @@ module.exports = {
     commonjs: true,
     es2021: true,
     node: true,
+    jest: true,
   },
   extends: ["airbnb-base", "airbnb-typescript/base", "prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 13,
+    ecmaVersion: 12,
     sourceType: "module",
     tsconfigRootDir: __dirname,
     project: ["./tsconfig.json"],
