@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { initializeServer } from "./server/index";
-import { initializeMongoDBServer } from "./database/index";
+import initializeMongoDBServer from "./database/index";
 
 dotenv.config();
 

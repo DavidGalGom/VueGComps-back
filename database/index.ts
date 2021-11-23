@@ -29,4 +29,4 @@ const initializeMongoDBServer = (connectionString) =>
     });
   });
 
-export = { initializeMongoDBServer };
+export = initializeMongoDBServer;
