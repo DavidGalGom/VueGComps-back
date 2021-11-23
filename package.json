@@ -2,12 +2,14 @@
   "name": "vuegcomps-back",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node .",
+    "start": "node dist/index.js",
     "start-dev": "nodemon -q .",
     "test": "jest --watchAll",
-    "test-cov": "jest --watchAll --collect-coverage"
+    "test-cov": "jest --watchAll --collect-coverage",
+    "build": "tsc",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
