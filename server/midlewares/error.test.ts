@@ -1,4 +1,4 @@
-import { notFoundErrorHandler } from "./error";
+import { notFoundErrorHandler, generalErrorHandler } from "./error";
 
 interface IResponseTest {
   status: () => void;
@@ -22,6 +22,23 @@ describe("Given a notFoundError handler function", () => {
 
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({ error: "Endpoint not found" });
+    });
+  });
+});
+
+describe("Given a general error handler", () => {
+  describe("When it receives an error without information", () => {
+    test("Then it should return a code 500 and a fatal error message", () => {
+      const res = mockResponse();
+      const error = {
+        code: 500,
+        message: "Fatal error",
+      };
+
+      generalErrorHandler(error, null, res, null);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ error: "Fatal error" });
     });
   });
 });
