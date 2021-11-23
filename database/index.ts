@@ -1,6 +1,6 @@
-const debug = require("debug")("components:indexDatabase");
-const chalk = require("chalk");
-const mongoose = require("mongoose");
+import debug from "debug";
+import chalk from "chalk";
+import mongoose from "mongoose";
 
 const initializeMongoDBServer = (connectionString) =>
   new Promise<void>((resolve, reject) => {

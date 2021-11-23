@@ -1,8 +1,10 @@
-const express = require("express");
-const chalk = require("chalk");
-const cors = require("cors");
-const debug = require("debug")("components:server");
-const morgan = require("morgan");
+import express from "express";
+import chalk from "chalk";
+import cors from "cors";
+import morgan from "morgan";
+import Debug from "debug";
+
+const debug = Debug("components:server");
 
 const app = express();
 
@@ -29,4 +31,4 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
-export = { initializeServer };
+export = { initializeServer, app };
