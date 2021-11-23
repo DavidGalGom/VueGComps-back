@@ -22,4 +22,5 @@ module.exports = {
     "no-debugger": "off",
     "no-console": "off",
   },
+  ignorePatterns: [".eslintrc.js", "./dist", "/*.config.js", "/*.config.cjs"],
 };
