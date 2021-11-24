@@ -113,4 +113,48 @@ describe("Given a addUser function", () => {
       expect(res.json).toHaveBeenCalledWith(user);
     });
   });
+
+  describe("When it receives a new userwith wrong params", () => {
+    test("Then it should summon next function with an error", async () => {
+      const req = {
+        body: {
+          name: "David",
+          userName: "David",
+          password: "******",
+          email: "david@david.com",
+          age: 29,
+          isAdmin: false,
+          components: [],
+          image: "image.png",
+        },
+      };
+
+      const user = {
+        name: "David",
+        userName: "David",
+        password: "******",
+        email: "david@david.com",
+        age: 29,
+        isAdmin: false,
+        components: [],
+        image: "image.png",
+      };
+      const next = jest.fn();
+      const expectedError: { code: number; message: string } = {
+        code: 400,
+        message: "Wrong data",
+      };
+
+      bcrypt.hash = jest.fn().mockResolvedValue(user.password);
+      User.create = jest.fn().mockRejectedValue(expectedError);
+
+      await addUser(req, null, next);
+
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+    });
+  });
 });
