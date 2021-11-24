@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../../database/models/user";
 import { getUsers, addUser, loginUser } from "./usersControllers";
 
@@ -182,6 +183,34 @@ describe("Given a loginUser function", () => {
         expectedError.message
       );
       expect(next.mock.calls[0][0]).toHaveProperty("code", 401);
+    });
+  });
+
+  describe("When it receives an existing username and a correct password", () => {
+    test("Then it should summon res.json with a token", async () => {
+      const req = {
+        body: {
+          userName: "David",
+          password: "*****",
+        },
+      };
+      const user = {
+        userName: "David",
+        password: "*****",
+      };
+      const expectedToken = {
+        token: "Token",
+      };
+      const res = {
+        json: jest.fn(),
+      };
+      User.findOne = jest.fn().mockResolvedValue(user);
+      bcrypt.compare = jest.fn().mockResolvedValue(true);
+      jwt.sign = jest.fn().mockReturnValue("Token");
+
+      await loginUser(req, res, null);
+
+      expect(res.json).toHaveBeenCalledWith(expectedToken);
     });
   });
 });
