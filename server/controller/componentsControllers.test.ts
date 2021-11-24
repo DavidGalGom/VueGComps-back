@@ -186,4 +186,17 @@ describe("Given a addComponent function", () => {
       expect(res.json).toHaveBeenCalledWith(result);
     });
   });
+
+  describe("When it receives a rejected promise", () => {
+    test("Then it should summon the method next with an error", async () => {
+      const req = jest.fn();
+      Component.create = jest.fn().mockRejectedValue({});
+      const next = jest.fn();
+      const res = mockResponse();
+
+      await addComponent(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+  });
 });
