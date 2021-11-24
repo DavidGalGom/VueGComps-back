@@ -221,4 +221,26 @@ describe("Given a deleteComponent function", () => {
       expect(error.code).toBe(400);
     });
   });
+
+  describe("When it receives an id with no component", () => {
+    test("Then it should call next with a 404 code and a component not found message", async () => {
+      const error: any = new Error("Component not found");
+      Component.findByIdAndDelete = jest.fn().mockResolvedValue(null);
+      const req = {
+        params: {
+          id: 1,
+        },
+      };
+      const next = jest.fn();
+
+      await deleteComponent(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        "Component not found"
+      );
+      expect(next.mock.calls[0][0]).toHaveProperty("code", 404);
+    });
+  });
 });
