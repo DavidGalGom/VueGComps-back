@@ -20,20 +20,6 @@ describe("Given a notFoundError handler function", () => {
       expect(res.json).toHaveBeenCalledWith({ error: "Endpoint not found" });
     });
   });
-
-  describe("When it receives a error instanceof ValidationError", () => {
-    test("Then it should return a 400 code and a Validation error message", () => {
-      const res = mockResponse();
-      const error = { message: "Validation error", code: 400 };
-      const req = {};
-      const next = {};
-
-      generalErrorHandler(error, req, res, next);
-
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ error: error.message });
-    });
-  });
 });
 
 describe("Given a general error handler", () => {
