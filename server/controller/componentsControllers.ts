@@ -39,3 +39,21 @@ export const addComponent = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteComponent = async (req, res, next) => {
+  const { idComponent } = req.params;
+  try {
+    const deletedComponent = await Component.findByIdAndDelete(idComponent);
+    if (deletedComponent) {
+      res.json({ id: deletedComponent.id });
+    } else {
+      const error: any = new Error("Component not found");
+      error.code = 404;
+      next(error);
+    }
+  } catch (error) {
+    error.code = 400;
+    error.message = "Bad Request!";
+    next(error);
+  }
+};
