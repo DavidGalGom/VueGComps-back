@@ -243,4 +243,22 @@ describe("Given a deleteComponent function", () => {
       expect(next.mock.calls[0][0]).toHaveProperty("code", 404);
     });
   });
+
+  describe("When it receives a right id", () => {
+    test("Then it should delete the component who correspond with the id", async () => {
+      const idComponent: number = 1;
+      const req = {
+        params: {
+          idComponent,
+        },
+      };
+      const res = {
+        json: () => {},
+      };
+      Component.findByIdAndDelete = jest.fn().mockResolvedValue({});
+
+      await deleteComponent(req, res, null);
+      expect(Component.findByIdAndDelete).toHaveBeenCalledWith(idComponent);
+    });
+  });
 });
