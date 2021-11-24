@@ -281,7 +281,30 @@ describe("Given a updateComponent function", () => {
       Component.findByIdAndUpdate = jest.fn().mockRejectedValue(error);
 
       await updateComponent(req, null, next);
-      console.log(next.mock.calls);
+
+      expect(next).toHaveBeenCalled();
+      expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
+      expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
+    });
+  });
+
+  describe("When it receives a wrong id", () => {
+    test("Then it should call next with a 404 code and Component not found message", async () => {
+      const idComponent = "Whatever";
+      const req = {
+        params: {
+          idComponent,
+        },
+      };
+      const next = jest.fn();
+      const error: { code: number; message: string } = {
+        code: 404,
+        message: "Component not found",
+      };
+      Component.findByIdAndUpdate = jest.fn().mockResolvedValue(null);
+
+      await updateComponent(req, null, next);
+
       expect(next).toHaveBeenCalled();
       expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
       expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
