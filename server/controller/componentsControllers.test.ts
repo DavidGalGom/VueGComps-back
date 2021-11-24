@@ -1,5 +1,5 @@
 import Component from "../../database/models/component";
-import getComponents from "./componentsControllers";
+import { getComponents, getComponentById } from "./componentsControllers";
 
 jest.mock("../../database/models/component");
 
@@ -71,6 +71,27 @@ describe("Given a getComponents function", () => {
         "Can't find the components"
       );
       expect(next.mock.calls[0][0]).toHaveProperty("code", 400);
+    });
+  });
+});
+
+describe("Given a getComponentById function", () => {
+  describe("When it receives a request with id 1, a res object", () => {
+    test("Then it should summon Component.findById with a 1", async () => {
+      Component.findById = jest.fn().mockResolvedValue({});
+      const idComponent = 1;
+      const req = {
+        params: {
+          idComponent,
+        },
+      };
+      const res = {
+        json: () => {},
+      };
+
+      await getComponentById(req, res, null);
+
+      expect(Component.findById).toHaveBeenCalledWith(idComponent);
     });
   });
 });
