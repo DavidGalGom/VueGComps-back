@@ -111,4 +111,30 @@ describe("Given a getComponentById function", () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe("When it arrives an id that there isn't in the database", () => {
+    test("Then it should return a 404 code and a component not found message", async () => {
+      const error: any = new Error("Component not found");
+      Component.findById = jest.fn().mockResolvedValue(null);
+      const idComponent: number = 20;
+      const req = {
+        params: {
+          idComponent,
+        },
+      };
+      const res = {
+        json: () => {},
+      };
+      const next = jest.fn();
+
+      await getComponentById(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        "Component not found"
+      );
+      expect(next.mock.calls[0][0]).toHaveProperty("code", 404);
+    });
+  });
 });
