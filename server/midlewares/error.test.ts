@@ -1,9 +1,5 @@
 import { notFoundErrorHandler, generalErrorHandler } from "./error";
-
-interface IResponseTest {
-  status: () => void;
-  json: () => void;
-}
+import IResponseTest from "../../interfaces/response";
 
 const mockResponse = () => {
   const res: IResponseTest = {
@@ -30,7 +26,7 @@ describe("Given a notFoundError handler function", () => {
       const res = mockResponse();
       const error = { message: "Validation error", code: 400 };
       const req = {};
-      const next = () => {};
+      const next = {};
 
       generalErrorHandler(error, req, res, next);
 
