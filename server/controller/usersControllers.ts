@@ -1,5 +1,9 @@
+import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../../database/models/user";
+
+dotenv.config();
 
 export const getUsers = async (req, res, next) => {
   try {
@@ -32,5 +36,42 @@ export const addUser = async (req, res, next) => {
       message: "Wrong data",
     };
     next(error);
+  }
+};
+
+export const loginUser = async (req, res, next) => {
+  const { userName, password } = req.body;
+  const user = await User.findOne({ userName });
+  if (!user) {
+    const error: { code: number; message: string } = {
+      code: 401,
+      message: "Wrong credentials",
+    };
+    next(error);
+  } else {
+    const correctPassword = await bcrypt.compare(password, user.password);
+    if (!correctPassword) {
+      const error: { code: number; message: string } = {
+        code: 401,
+        message: "Wrong credentials",
+      };
+      next(error);
+    } else {
+      const token = jwt.sign(
+        {
+          name: user.name,
+          userName: user.userName,
+          email: user.email,
+          age: user.age,
+          isAdmin: user.isAdmin,
+          image: user.image,
+        },
+        process.env.TOKEN,
+        {
+          expiresIn: 72 * 60 * 60,
+        }
+      );
+      res.json({ token });
+    }
   }
 };
