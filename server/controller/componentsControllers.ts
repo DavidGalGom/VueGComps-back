@@ -57,3 +57,26 @@ export const deleteComponent = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateComponent = async (req, res, next) => {
+  const component = req.body;
+  const { idComponent } = req.params;
+  try {
+    const updatedComponent = await Component.findByIdAndUpdate(
+      idComponent,
+      component,
+      { new: true }
+    );
+    if (updatedComponent) {
+      res.json(updatedComponent);
+    } else {
+      const error: any = new Error("Component not found");
+      error.code = 404;
+      next(error);
+    }
+  } catch {
+    const error: any = new Error("Wrong format");
+    error.code = 400;
+    next(error);
+  }
+};
