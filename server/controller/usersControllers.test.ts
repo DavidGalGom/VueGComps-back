@@ -37,4 +37,36 @@ describe("Given a getUsers function", () => {
       expect(res.json).toHaveBeenCalledWith(users);
     });
   });
+
+  describe("When its called wrong", () => {
+    test("Then it should return a error with code 400", async () => {
+      const req = {
+        body: {
+          name: "David",
+          userName: "David",
+          password: "******",
+          email: "david@david.com",
+          age: 29,
+          isAdmin: false,
+          components: [],
+          image: "image.png",
+        },
+      };
+      User.find = jest.fn().mockResolvedValue(null);
+      const next = jest.fn();
+      const expectedError: { code: number; message: string } = {
+        code: 400,
+        message: "Can't find the users",
+      };
+
+      await getUsers(req, null, next);
+
+      expect(next).toHaveBeenCalled();
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+    });
+  });
 });

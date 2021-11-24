@@ -58,7 +58,7 @@ describe("Given a getComponents function", () => {
     });
   });
   describe("When its called wrong", () => {
-    test("Then it should summon with and error and code 400 ", async () => {
+    test("Then it should return an error and code 400 ", async () => {
       const req = {
         body: {
           name: "AsusRog Motherboard",
