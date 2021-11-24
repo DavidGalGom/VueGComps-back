@@ -27,3 +27,15 @@ export const getComponentById = async (req, res, next) => {
     next(error);
   }
 };
+
+export const addComponent = async (req, res, next) => {
+  try {
+    const component = req.body;
+    const newComponent = await Component.create(component);
+    res.json(newComponent);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Bad request";
+    next(error);
+  }
+};
