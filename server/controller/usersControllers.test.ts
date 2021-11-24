@@ -213,4 +213,36 @@ describe("Given a loginUser function", () => {
       expect(res.json).toHaveBeenCalledWith(expectedToken);
     });
   });
+  describe("When it receives a wrong password", () => {
+    test("Then it should summon next function with an error", async () => {
+      const req = {
+        body: {
+          userName: "David",
+          password: "*****",
+        },
+      };
+      const user = {
+        userName: "David",
+        password: "*****",
+      };
+      const res = {
+        json: jest.fn(),
+      };
+      const next = jest.fn();
+      User.findOne = jest.fn().mockResolvedValue(user);
+      bcrypt.compare = jest.fn().mockResolvedValue(false);
+      const expectedError: { code: number; message: string } = {
+        code: 401,
+        message: "Wrong credentials",
+      };
+
+      await loginUser(req, res, next);
+
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+    });
+  });
 });
