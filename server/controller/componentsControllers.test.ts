@@ -310,4 +310,21 @@ describe("Given a updateComponent function", () => {
       expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
     });
   });
+
+  describe("When it receives an id, and a body with correct params", () => {
+    test("Then it should update the components with the new params", async () => {
+      const idComponent = "A correct random id";
+      const req = {
+        params: {
+          idComponent,
+        },
+      };
+      const res = mockResponse();
+      Component.findByIdAndUpdate = jest.fn().mockResolvedValue(idComponent);
+
+      await updateComponent(req, res, null);
+
+      expect(res.json).toHaveBeenCalledWith(idComponent);
+    });
+  });
 });
