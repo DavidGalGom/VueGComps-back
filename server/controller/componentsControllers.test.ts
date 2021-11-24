@@ -94,4 +94,21 @@ describe("Given a getComponentById function", () => {
       expect(Component.findById).toHaveBeenCalledWith(idComponent);
     });
   });
+
+  describe("When receives a Component.findById reject", () => {
+    test("Then it should summon next function with the rejected error", async () => {
+      const error = {};
+      Component.findById = jest.fn().mockRejectedValue(error);
+      const req = {
+        params: {
+          idComponent: 1,
+        },
+      };
+      const next = jest.fn();
+
+      await getComponentById(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
 });
