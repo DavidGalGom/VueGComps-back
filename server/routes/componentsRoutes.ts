@@ -4,6 +4,7 @@ import {
   getComponents,
   getComponentById,
   addComponent,
+  deleteComponent,
 } from "../controller/componentsControllers";
 
 const router = express.Router();
@@ -11,5 +12,6 @@ const router = express.Router();
 router.get("/", getComponents);
 router.get("/:idComponent", getComponentById);
 router.post("/", addComponent);
+router.delete("/:idComponent", deleteComponent);
 
 export default router;
