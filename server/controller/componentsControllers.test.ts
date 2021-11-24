@@ -19,7 +19,7 @@ const mockResponse = () => {
 
 describe("Given a getComponents function", () => {
   describe("When it receives an object res", () => {
-    test("Then it should summmon the method json", async () => {
+    test("Then it should summon the method json", async () => {
       const components = [
         {
           name: "AsusRog Motherboard",
@@ -50,6 +50,7 @@ describe("Given a getComponents function", () => {
       const res = {
         json: jest.fn(),
       };
+
       await getComponents(null, res, null);
 
       expect(Component.find).toHaveBeenCalled();
@@ -57,7 +58,7 @@ describe("Given a getComponents function", () => {
     });
   });
   describe("When its called wrong", () => {
-    test("Then it should summon with and error and code 400 ", async () => {
+    test("Then it should return an error and code 400 ", async () => {
       const req = {
         body: {
           name: "AsusRog Motherboard",
