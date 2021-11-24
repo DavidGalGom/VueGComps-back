@@ -4,6 +4,7 @@ import {
   getComponentById,
   addComponent,
   deleteComponent,
+  updateComponent,
 } from "./componentsControllers";
 import IResponseTest from "../../interfaces/response";
 
@@ -259,6 +260,71 @@ describe("Given a deleteComponent function", () => {
 
       await deleteComponent(req, res, null);
       expect(Component.findByIdAndDelete).toHaveBeenCalledWith(idComponent);
+    });
+  });
+});
+
+describe("Given a updateComponent function", () => {
+  describe("When arrives a wrong body of updateComponent function", () => {
+    test("Then it should return an error and a status 400", async () => {
+      const idComponent = "Whatever";
+      const req = {
+        params: {
+          idComponent,
+        },
+      };
+      const next = jest.fn();
+      const error: { code: number; message: string } = {
+        code: 400,
+        message: "Wrong format",
+      };
+      Component.findByIdAndUpdate = jest.fn().mockRejectedValue(error);
+
+      await updateComponent(req, null, next);
+
+      expect(next).toHaveBeenCalled();
+      expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
+      expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
+    });
+  });
+
+  describe("When it receives a wrong id", () => {
+    test("Then it should call next with a 404 code and Component not found message", async () => {
+      const idComponent = "Whatever";
+      const req = {
+        params: {
+          idComponent,
+        },
+      };
+      const next = jest.fn();
+      const error: { code: number; message: string } = {
+        code: 404,
+        message: "Component not found",
+      };
+      Component.findByIdAndUpdate = jest.fn().mockResolvedValue(null);
+
+      await updateComponent(req, null, next);
+
+      expect(next).toHaveBeenCalled();
+      expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
+      expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
+    });
+  });
+
+  describe("When it receives an id, and a body with correct params", () => {
+    test("Then it should update the components with the new params", async () => {
+      const idComponent = "A correct random id";
+      const req = {
+        params: {
+          idComponent,
+        },
+      };
+      const res = mockResponse();
+      Component.findByIdAndUpdate = jest.fn().mockResolvedValue(idComponent);
+
+      await updateComponent(req, res, null);
+
+      expect(res.json).toHaveBeenCalledWith(idComponent);
     });
   });
 });
