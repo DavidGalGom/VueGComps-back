@@ -1,6 +1,6 @@
 import Component from "../../database/models/component";
 
-const getComponents = async (req, res, next) => {
+export const getComponents = async (req, res, next) => {
   try {
     const components = await Component.find();
     res.json(components);
@@ -11,4 +11,19 @@ const getComponents = async (req, res, next) => {
   }
 };
 
-export default getComponents;
+export const getComponentById = async (req, res, next) => {
+  const { idComponent } = req.params;
+  try {
+    const searchedComponent = await Component.findById(idComponent);
+    if (searchedComponent) {
+      res.json(searchedComponent);
+    } else {
+      const error: any = new Error("Component not found");
+      error.code = 404;
+      next(error);
+    }
+  } catch (error) {
+    error.code = 400;
+    next(error);
+  }
+};
