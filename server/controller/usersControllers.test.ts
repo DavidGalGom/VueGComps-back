@@ -1,5 +1,9 @@
+import bcrypt from "bcrypt";
 import User from "../../database/models/user";
-import getUsers from "./usersControllers";
+import { getUsers, addUser } from "./usersControllers";
+
+jest.mock("../../database/models/user");
+jest.mock("bcrypt");
 
 describe("Given a getUsers function", () => {
   describe("When it receives an object res", () => {
@@ -67,6 +71,90 @@ describe("Given a getUsers function", () => {
         "message",
         expectedError.message
       );
+    });
+  });
+});
+
+describe("Given a addUser function", () => {
+  describe("When it receives anew user", () => {
+    test("Then it should summon res.json with a new user", async () => {
+      const req = {
+        body: {
+          name: "David",
+          userName: "David",
+          password: "******",
+          email: "david@david.com",
+          age: 29,
+          isAdmin: false,
+          components: [],
+          image: "image.png",
+        },
+      };
+      const user = {
+        name: "David",
+        userName: "David",
+        password: "******",
+        email: "david@david.com",
+        age: 29,
+        isAdmin: false,
+        components: [],
+        image: "image.png",
+      };
+
+      const res = {
+        json: jest.fn(),
+      };
+
+      bcrypt.hash = jest.fn().mockResolvedValue(user.password);
+      User.create = jest.fn().mockResolvedValue(user);
+
+      await addUser(req, res, null);
+
+      expect(res.json).toHaveBeenCalledWith(user);
+    });
+  });
+
+  describe("When it receives a new userwith wrong params", () => {
+    test("Then it should summon next function with an error", async () => {
+      const req = {
+        body: {
+          name: "David",
+          userName: "David",
+          password: "******",
+          email: "david@david.com",
+          age: 29,
+          isAdmin: false,
+          components: [],
+          image: "image.png",
+        },
+      };
+
+      const user = {
+        name: "David",
+        userName: "David",
+        password: "******",
+        email: "david@david.com",
+        age: 29,
+        isAdmin: false,
+        components: [],
+        image: "image.png",
+      };
+      const next = jest.fn();
+      const expectedError: { code: number; message: string } = {
+        code: 400,
+        message: "Wrong data",
+      };
+
+      bcrypt.hash = jest.fn().mockResolvedValue(user.password);
+      User.create = jest.fn().mockRejectedValue(expectedError);
+
+      await addUser(req, null, next);
+
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
     });
   });
 });
