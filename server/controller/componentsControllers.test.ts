@@ -3,6 +3,7 @@ import {
   getComponents,
   getComponentById,
   addComponent,
+  deleteComponent,
 } from "./componentsControllers";
 import IResponseTest from "../../interfaces/response";
 
@@ -197,6 +198,27 @@ describe("Given a addComponent function", () => {
       await addComponent(req, res, next);
 
       expect(next).toHaveBeenCalled();
+    });
+  });
+});
+
+describe("Given a deleteComponent function", () => {
+  describe("When it receives a non valid id", () => {
+    test("Then it should summon next with a code 400 and a bad request! message", async () => {
+      const error: any = {};
+      Component.findByIdAndDelete = jest.fn().mockRejectedValue(error);
+      const req = {
+        params: {
+          idComponent: 1,
+        },
+      };
+      const next = jest.fn();
+
+      await deleteComponent(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(error).toHaveProperty("code");
+      expect(error.code).toBe(400);
     });
   });
 });
