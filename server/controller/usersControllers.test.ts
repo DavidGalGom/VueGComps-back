@@ -1,5 +1,5 @@
 import User from "../../database/models/user";
-import getUsers from "./usersControllers";
+import { getUsers } from "./usersControllers";
 
 describe("Given a getUsers function", () => {
   describe("When it receives an object res", () => {
