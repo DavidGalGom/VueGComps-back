@@ -4,6 +4,7 @@ import {
   getComponentById,
   addComponent,
   deleteComponent,
+  updateComponent,
 } from "./componentsControllers";
 import IResponseTest from "../../interfaces/response";
 
@@ -259,6 +260,31 @@ describe("Given a deleteComponent function", () => {
 
       await deleteComponent(req, res, null);
       expect(Component.findByIdAndDelete).toHaveBeenCalledWith(idComponent);
+    });
+  });
+});
+
+describe("Given a updateComponent function", () => {
+  describe("When arrives a wrong body of updateComponent function", () => {
+    test("Then it should return an error and a status 400", async () => {
+      const idComponent = "Whatever";
+      const req = {
+        params: {
+          idComponent,
+        },
+      };
+      const next = jest.fn();
+      const error: { code: number; message: string } = {
+        code: 400,
+        message: "Wrong format",
+      };
+      Component.findByIdAndUpdate = jest.fn().mockRejectedValue(error);
+
+      await updateComponent(req, null, next);
+      console.log(next.mock.calls);
+      expect(next).toHaveBeenCalled();
+      expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
+      expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
     });
   });
 });
