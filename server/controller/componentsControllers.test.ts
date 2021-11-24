@@ -1,7 +1,19 @@
 import Component from "../../database/models/component";
-import { getComponents, getComponentById } from "./componentsControllers";
+import {
+  getComponents,
+  getComponentById,
+  addComponent,
+} from "./componentsControllers";
+import IResponseTest from "../../interfaces/response";
 
 jest.mock("../../database/models/component");
+const mockResponse = () => {
+  const res: IResponseTest = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn().mockReturnThis(),
+  };
+  return res;
+};
 
 describe("Given a getComponents function", () => {
   describe("When it receives an object res", () => {
@@ -135,6 +147,56 @@ describe("Given a getComponentById function", () => {
         "Component not found"
       );
       expect(next.mock.calls[0][0]).toHaveProperty("code", 404);
+    });
+  });
+});
+
+describe("Given a addComponent function", () => {
+  describe("When it receives a resolved value", () => {
+    test("Then it should create a new component", async () => {
+      const req = {
+        name: "AsusRog Motherboard",
+        type: "Motherboard",
+        price: 199.99,
+        mainImage:
+          "https://www.muycomputer.com/wp-content/uploads/2015/02/placabase_2.jpg",
+        alterImage:
+          "https://static-geektopia.com/storage/t/p/540/54025/816x381/file-270fa1...",
+        brand: "Asus Rog",
+        description: "An amazing motherboard for gaming",
+        isFavorite: false,
+      };
+      const result = {
+        name: "AsusRog Motherboard",
+        type: "Motherboard",
+        price: 199.99,
+        mainImage:
+          "https://www.muycomputer.com/wp-content/uploads/2015/02/placabase_2.jpg",
+        alterImage:
+          "https://static-geektopia.com/storage/t/p/540/54025/816x381/file-270fa1...",
+        brand: "Asus Rog",
+        description: "An amazing motherboard for gaming",
+        isFavorite: false,
+      };
+      const res = mockResponse();
+
+      Component.create = jest.fn().mockResolvedValue(result);
+      await addComponent(req, res, null);
+
+      expect(res.json).toHaveBeenCalledWith(result);
+    });
+  });
+
+  describe("When it receives a rejected promise", () => {
+    test("Then it should summon the method next with an error", async () => {
+      const req = jest.fn();
+      Component.create = jest.fn().mockRejectedValue({});
+      const next = jest.fn();
+      const res = mockResponse();
+
+      await addComponent(req, res, next);
+
+      expect(next).toHaveBeenCalled();
     });
   });
 });
