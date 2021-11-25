@@ -75,3 +75,24 @@ export const loginUser = async (req, res, next) => {
     }
   }
 };
+
+export const updateUser = async (req, res, next) => {
+  const user = req.body;
+  const { idUser } = req.params;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(idUser, user, {
+      new: true,
+    });
+    if (updatedUser) {
+      res.json(updatedUser);
+    } else {
+      const error: any = new Error("User not found");
+      error.code = 404;
+      next(error);
+    }
+  } catch {
+    const error: any = new Error("Wrong format");
+    error.code = 400;
+    next(error);
+  }
+};
