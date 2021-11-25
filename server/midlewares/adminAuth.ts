@@ -1,7 +1,3 @@
-import dotenv from "dotenv";
-
-dotenv.config();
-
 const adminAuth = async (req, res, next) => {
   const admin = req.isAdmin;
   if (admin) {
