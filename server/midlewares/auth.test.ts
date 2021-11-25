@@ -40,4 +40,21 @@ describe("Given an Auth middleware", () => {
       expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
     });
   });
+
+  describe("When it gets a request with a valid Header but  not a token", () => {
+    test("Then it should send an error with a message 'Token missing'", () => {
+      const req = mockRequestAuth(null, "Bearer ");
+      const next = jest.fn();
+      const error: { code: number; message: string } = {
+        code: 401,
+        message: "Token missing",
+      };
+
+      auth(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
+      expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
+    });
+  });
 });
