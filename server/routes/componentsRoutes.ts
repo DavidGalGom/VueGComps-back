@@ -1,5 +1,6 @@
 import express from "express";
-import auth from "../middlewares/auth";
+import auth from "../midlewares/auth";
+import adminAuth from "../midlewares/adminAuth";
 
 import {
   getComponents,
@@ -13,8 +14,8 @@ const router = express.Router();
 
 router.get("/", getComponents);
 router.get("/:idComponent", getComponentById);
-router.post("/", auth, addComponent);
-router.delete("/:idComponent", auth, deleteComponent);
-router.put("/:idComponent", auth, updateComponent);
+router.post("/", auth, adminAuth, addComponent);
+router.delete("/:idComponent", auth, adminAuth, deleteComponent);
+router.put("/:idComponent", auth, adminAuth, updateComponent);
 
 export default router;

@@ -23,6 +23,7 @@ const auth = async (req, res, next) => {
       try {
         const user = jwt.verify(token, process.env.TOKEN);
         req.userId = user.id;
+        req.isAdmin = user.isAdmin;
         next();
       } catch {
         const error: { code: number; message: string } = {

@@ -6,7 +6,7 @@ import Debug from "debug";
 import IError from "../interfaces/error";
 import componentsRoutes from "./routes/componentsRoutes";
 import usersRoutes from "./routes/usersRoutes";
-import { notFoundErrorHandler, generalErrorHandler } from "./middlewares/error";
+import { notFoundErrorHandler, generalErrorHandler } from "./midlewares/error";
 
 const debug = Debug("components:server");
 
