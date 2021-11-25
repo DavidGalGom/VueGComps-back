@@ -24,9 +24,12 @@ const auth = async (req, res, next) => {
         const user = jwt.verify(token, process.env.TOKEN);
         req.userId = user.id;
         next();
-      } catch (error: any) {
-        error.code = 401;
-        error.message = "Wrong token";
+      } catch {
+        const error: { code: number; message: string } = {
+          code: 401,
+          message: "Wrong token",
+        };
+        next(error);
       }
     }
   }

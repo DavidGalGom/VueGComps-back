@@ -57,4 +57,24 @@ describe("Given an Auth middleware", () => {
       expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
     });
   });
+
+  describe("When it gets a request with a Authorization header but with an incorrect token", () => {
+    test("Then it should send an error with a message 'Wrong token' and status 401", async () => {
+      const req = mockRequestAuth(null, "Bearer token");
+      const res = mockResponse();
+      const next = jest.fn();
+      jwt.verify = jest.fn().mockReturnValue(null);
+
+      const error: { code: number; message: string } = {
+        code: 401,
+        message: "Wrong token",
+      };
+
+      await auth(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
+      expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
+    });
+  });
 });
