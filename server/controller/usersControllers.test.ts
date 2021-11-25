@@ -2,9 +2,17 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../database/models/user";
 import { getUsers, addUser, loginUser, updateUser } from "./usersControllers";
+import IResponseTest from "../../interfaces/response";
 
 jest.mock("../../database/models/user");
 jest.mock("bcrypt");
+const mockResponse = () => {
+  const res: IResponseTest = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn().mockReturnThis(),
+  };
+  return res;
+};
 
 describe("Given a getUsers function", () => {
   describe("When it receives an object res", () => {
@@ -291,6 +299,23 @@ describe("Given an updateUser function", () => {
       expect(next).toHaveBeenCalled();
       expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
       expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
+    });
+  });
+
+  describe("When it receives an id, and a body with correct params", () => {
+    test("Then it should update the user with the new params", async () => {
+      const idUser = "id";
+      const req = {
+        params: {
+          idUser,
+        },
+      };
+      const res = mockResponse();
+      User.findByIdAndUpdate = jest.fn().mockResolvedValue(idUser);
+
+      await updateUser(req, res, null);
+
+      expect(res.json).toHaveBeenCalledWith(idUser);
     });
   });
 });
