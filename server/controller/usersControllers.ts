@@ -7,7 +7,7 @@ dotenv.config();
 
 export const getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find().populate("components");
     res.json(users);
   } catch (error) {
     error.message = "Can't find the users";
@@ -100,7 +100,7 @@ export const updateUser = async (req, res, next) => {
 export const getUserById = async (req, res, next) => {
   const { idUser } = req.params;
   try {
-    const searchedUser = await User.findById(idUser);
+    const searchedUser = await User.findById(idUser).populate("components");
     if (searchedUser) {
       res.json(searchedUser);
     } else {
