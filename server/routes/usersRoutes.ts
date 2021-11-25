@@ -1,4 +1,5 @@
 import express from "express";
+import auth from "../middlewares/auth";
 
 import {
   getUsers,
@@ -9,9 +10,9 @@ import {
 
 const router = express.Router();
 
-router.get("/", getUsers);
+router.get("/", auth, getUsers);
 router.post("/register", addUser);
 router.post("/login", loginUser);
-router.put("/:idUser", updateUser);
+router.put("/:idUser", auth, updateUser);
 
 export default router;
