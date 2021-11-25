@@ -96,3 +96,25 @@ export const updateUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUserById = async (req, res, next) => {
+  const { idUser } = req.params;
+  try {
+    const searchedUser = await User.findById(idUser);
+    if (searchedUser) {
+      res.json(searchedUser);
+    } else {
+      const error: { code: number; message: string } = {
+        code: 404,
+        message: "User not found",
+      };
+      next(error);
+    }
+  } catch {
+    const error: { code: number; message: string } = {
+      code: 400,
+      message: "Wrong petition",
+    };
+    next(error);
+  }
+};

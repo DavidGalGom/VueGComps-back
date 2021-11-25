@@ -101,12 +101,12 @@ describe("Given a getComponentById function", () => {
         },
       };
       const res = {
-        json: () => {},
+        json: jest.fn(),
       };
 
       await getComponentById(req, res, null);
 
-      expect(Component.findById).toHaveBeenCalledWith(idComponent);
+      expect(res.json).toHaveBeenCalled();
     });
   });
 
@@ -138,7 +138,7 @@ describe("Given a getComponentById function", () => {
         },
       };
       const res = {
-        json: () => {},
+        json: jest.fn(),
       };
       const next = jest.fn();
 
