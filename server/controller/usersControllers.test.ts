@@ -345,4 +345,24 @@ describe("Given a getUserById function", () => {
       expect(res.json).toHaveBeenCalled();
     });
   });
+
+  describe("When it receives a getUserById reject", () => {
+    test("Then it should summon the next function with the rejected error", async () => {
+      const error: { code: number; message: string } = {
+        code: 400,
+        message: "Wrong petition",
+      };
+      User.findById = jest.fn().mockRejectedValue(error);
+      const req = {
+        params: {
+          idUser: 1,
+        },
+      };
+      const next = jest.fn();
+
+      await getUserById(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
 });
