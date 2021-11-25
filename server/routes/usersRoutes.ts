@@ -1,5 +1,6 @@
 import express from "express";
-import auth from "../middlewares/auth";
+import auth from "../midlewares/auth";
+import adminAuth from "../midlewares/adminAuth";
 
 import {
   getUsers,
@@ -10,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", auth, getUsers);
+router.get("/", auth, adminAuth, getUsers);
 router.post("/register", addUser);
 router.post("/login", loginUser);
 router.put("/:idUser", auth, updateUser);
