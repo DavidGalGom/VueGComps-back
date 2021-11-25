@@ -261,7 +261,30 @@ describe("Given an updateUser function", () => {
         code: 400,
         message: "Wrong format",
       };
-      User.findByIdAndUpdate = jest.fn().mockRejectedValue(error);
+      User.findByIdAndUpdate = jest.fn().mockRejectedValue(null);
+
+      await updateUser(req, null, next);
+
+      expect(next).toHaveBeenCalled();
+      expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
+      expect(next.mock.calls[0][0]).toHaveProperty("code", error.code);
+    });
+  });
+
+  describe("When it receives a wrong id", () => {
+    test("Then it should call next with a 404 code and user not found message", async () => {
+      const idUser = "Whatever";
+      const req = {
+        params: {
+          idUser,
+        },
+      };
+      const next = jest.fn();
+      const error: { code: number; message: string } = {
+        code: 404,
+        message: "User not found",
+      };
+      User.findByIdAndUpdate = jest.fn().mockResolvedValue(null);
 
       await updateUser(req, null, next);
 

@@ -83,7 +83,7 @@ export const updateUser = async (req, res, next) => {
     const updatedUser = await User.findByIdAndUpdate(idUser, user, {
       new: true,
     });
-    if (updateUser) {
+    if (updatedUser) {
       res.json(updatedUser);
     } else {
       const error: any = new Error("User not found");
