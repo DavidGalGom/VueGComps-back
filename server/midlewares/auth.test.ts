@@ -77,4 +77,17 @@ describe("Given an Auth middleware", () => {
       expect(next.mock.calls[0][0]).toHaveProperty("message", error.message);
     });
   });
+
+  describe("When it gets a request with a Authorization header and a correct token", () => {
+    test("Then it should add a property userId to the request and call next", async () => {
+      const req = mockRequestAuth(null, "Bearer token");
+      const next = jest.fn();
+
+      jwt.verify = jest.fn().mockReturnValue("token");
+      await auth(req, null, next);
+
+      expect(req).toHaveProperty("userId");
+      expect(next).toHaveBeenCalled();
+    });
+  });
 });
