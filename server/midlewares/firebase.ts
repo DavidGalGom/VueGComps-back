@@ -6,7 +6,7 @@ const debug = Debug("components:firebase");
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
-  storageBucket: "vuegcomps.appspot.com/",
+  storageBucket: "vuegcomps.appspot.com",
 });
 
 const firebase = async (req, res, next) => {

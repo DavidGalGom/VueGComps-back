@@ -20,7 +20,7 @@ router.post(
   "/",
   auth,
   adminAuth,
-  upload.single("images"),
+  upload.single("mainImage"),
   firebase,
   addComponent
 );
@@ -29,7 +29,7 @@ router.put(
   "/:idComponent",
   auth,
   adminAuth,
-  upload.single("images"),
+  upload.single("mainImage"),
   firebase,
   updateComponent
 );
