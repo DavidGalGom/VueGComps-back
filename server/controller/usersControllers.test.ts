@@ -45,7 +45,9 @@ describe("Given a getUsers function", () => {
           image: "image.png",
         },
       ];
-      User.find = jest.fn().mockResolvedValue(users);
+      User.find = jest
+        .fn()
+        .mockReturnValue({ populate: jest.fn().mockResolvedValue(users) });
       const res = {
         json: jest.fn(),
       };
@@ -71,7 +73,9 @@ describe("Given a getUsers function", () => {
           image: "image.png",
         },
       };
-      User.find = jest.fn().mockResolvedValue(null);
+      User.find = jest
+        .fn()
+        .mockReturnValue({ populate: jest.fn().mockResolvedValue(null) });
       const next = jest.fn();
       const expectedError: { code: number; message: string } = {
         code: 400,
@@ -329,13 +333,15 @@ describe("Given an updateUser function", () => {
 describe("Given a getUserById function", () => {
   describe("When it receives a request with id 1 and a res object", () => {
     test("Then it should summon res.json", async () => {
-      User.findById = jest.fn().mockResolvedValue({});
       const idUser = 1;
       const req = {
         params: {
           idUser,
         },
       };
+      User.findById = jest
+        .fn()
+        .mockReturnValue({ populate: jest.fn().mockResolvedValue(idUser) });
       const res = {
         json: jest.fn(),
       };
@@ -352,7 +358,9 @@ describe("Given a getUserById function", () => {
         code: 400,
         message: "Wrong petition",
       };
-      User.findById = jest.fn().mockRejectedValue(error);
+      User.findById = jest
+        .fn()
+        .mockReturnValue({ populate: jest.fn().mockRejectedValue(error) });
       const req = {
         params: {
           idUser: 1,
@@ -372,7 +380,9 @@ describe("Given a getUserById function", () => {
         code: 404,
         message: "User not found",
       };
-      User.findById = jest.fn().mockResolvedValue(null);
+      User.findById = jest
+        .fn()
+        .mockReturnValue({ populate: jest.fn().mockResolvedValue(null) });
       const idUser: number = 1;
       const req = {
         params: {
