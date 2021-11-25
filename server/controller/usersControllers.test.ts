@@ -365,4 +365,30 @@ describe("Given a getUserById function", () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe("When it recives an id that there isn't in the database", () => {
+    test("Then it should retuen a 404 code and a user not found", async () => {
+      const error: { code: number; message: string } = {
+        code: 404,
+        message: "User not found",
+      };
+      User.findById = jest.fn().mockResolvedValue(null);
+      const idUser: number = 1;
+      const req = {
+        params: {
+          idUser,
+        },
+      };
+      const res = {
+        json: jest.fn(),
+      };
+      const next = jest.fn();
+
+      await getUserById(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(next.mock.calls[0][0]).toHaveProperty("message", "User not found");
+      expect(next.mock.calls[0][0]).toHaveProperty("code", 404);
+    });
+  });
 });

@@ -138,7 +138,7 @@ describe("Given a getComponentById function", () => {
         },
       };
       const res = {
-        json: () => {},
+        json: jest.fn(),
       };
       const next = jest.fn();
 
