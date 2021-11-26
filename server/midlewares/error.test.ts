@@ -1,5 +1,7 @@
+// import { ValidationError } from "express-validation";
 import { notFoundErrorHandler, generalErrorHandler } from "./error";
 import IResponseTest from "../../interfaces/response";
+import IError from "../../interfaces/error";
 
 const mockResponse = () => {
   const res: IResponseTest = {
@@ -26,15 +28,26 @@ describe("Given a general error handler", () => {
   describe("When it receives an error without information", () => {
     test("Then it should return a code 500 and a fatal error message", () => {
       const res = mockResponse();
-      const error = {
-        code: 500,
-        message: "Fatal error",
-      };
+      const error = new Error("Fatal error") as IError;
+      error.statusCode = 500;
 
       generalErrorHandler(error, null, res, null);
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({ error: "Fatal error" });
+    });
+  });
+
+  describe("When it receives a ValidationError", () => {
+    test("Then it should return an error with code 400 and a validation error message", async () => {
+      const res = mockResponse();
+      const error = new Error("Validation error") as IError;
+      error.statusCode = 400;
+
+      generalErrorHandler(error, null, res, null);
+
+      expect(res.status).toHaveBeenCalledWith(error.statusCode);
+      expect(res.json).toHaveBeenCalledWith({ error: error.message });
     });
   });
 });

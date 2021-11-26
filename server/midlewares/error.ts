@@ -9,6 +9,10 @@ export const notFoundErrorHandler = (req, res) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const generalErrorHandler = (error: IError, req, res, next) => {
+  if (error.statusCode === 400) {
+    error.code = 400;
+    error.message = "Validation error";
+  }
   debug("A wild error appears: ", error.message);
   const message = error.code ? error.message : "Fatal error";
   res.status(error.code || 500).json({ error: message });
