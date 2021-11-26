@@ -31,7 +31,11 @@ export const getComponentById = async (req, res, next) => {
 export const addComponent = async (req, res, next) => {
   try {
     const component = req.body;
-    const newComponent = await Component.create(component);
+    const { fileURL } = req.file;
+    const newComponent = await Component.create({
+      ...component,
+      mainImage: fileURL,
+    });
     res.json(newComponent);
   } catch (error) {
     error.code = 400;
@@ -60,11 +64,12 @@ export const deleteComponent = async (req, res, next) => {
 
 export const updateComponent = async (req, res, next) => {
   const component = req.body;
+  const { fileURL } = req.file;
   const { idComponent } = req.params;
   try {
     const updatedComponent = await Component.findByIdAndUpdate(
       idComponent,
-      component,
+      { ...component, mainImage: fileURL },
       { new: true }
     );
     if (updatedComponent) {
