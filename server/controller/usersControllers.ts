@@ -29,7 +29,7 @@ export const addUser = async (req, res, next) => {
       isAdmin: user.isAdmin,
       image: user.image,
     });
-    res.json(users);
+    res.status(201).json(users);
   } catch {
     const error: { code: number; message: string } = {
       code: 400,
