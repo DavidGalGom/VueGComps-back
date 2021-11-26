@@ -95,7 +95,7 @@ describe("Given a getUsers function", () => {
 });
 
 describe("Given a addUser function", () => {
-  describe("When it receives anew user", () => {
+  describe("When it receives a new user", () => {
     test("Then it should summon res.json with a new user", async () => {
       const req = {
         body: {
@@ -120,9 +120,7 @@ describe("Given a addUser function", () => {
         image: "image.png",
       };
 
-      const res = {
-        json: jest.fn(),
-      };
+      const res = mockResponse();
 
       bcrypt.hash = jest.fn().mockResolvedValue(user.password);
       User.create = jest.fn().mockResolvedValue(user);

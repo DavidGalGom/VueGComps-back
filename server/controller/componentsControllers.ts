@@ -36,7 +36,7 @@ export const addComponent = async (req, res, next) => {
       ...component,
       mainImage: fileURL,
     });
-    res.json(newComponent);
+    res.status(201).json(newComponent);
   } catch (error) {
     error.code = 400;
     error.message = "Bad request";
