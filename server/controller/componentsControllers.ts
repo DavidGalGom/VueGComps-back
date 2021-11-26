@@ -31,9 +31,10 @@ export const getComponentById = async (req, res, next) => {
 export const addComponent = async (req, res, next) => {
   try {
     const component = req.body;
+    const { fileURL } = req.file;
     const newComponent = await Component.create({
       ...component,
-      mainImage: req.file.fileURL,
+      mainImage: fileURL,
     });
     res.json(newComponent);
   } catch (error) {

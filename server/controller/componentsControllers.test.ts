@@ -158,33 +158,30 @@ describe("Given a addComponent function", () => {
   describe("When it receives a resolved value", () => {
     test("Then it should create a new component", async () => {
       const req = {
-        name: "AsusRog Motherboard",
-        type: "Motherboard",
-        price: 199.99,
-        mainImage:
-          "https://www.muycomputer.com/wp-content/uploads/2015/02/placabase_2.jpg",
-        alterImage:
-          "https://static-geektopia.com/storage/t/p/540/54025/816x381/file-270fa1...",
-        brand: "Asus Rog",
-        description: "An amazing motherboard for gaming",
-        isFavorite: false,
+        body: {
+          name: "AsusRog Motherboard",
+          type: "Motherboard",
+          price: 199.99,
+          mainImage:
+            "https://www.muycomputer.com/wp-content/uploads/2015/02/placabase_2.jpg",
+          alterImage:
+            "https://static-geektopia.com/storage/t/p/540/54025/816x381/file-270fa1...",
+          brand: "Asus Rog",
+          description: "An amazing motherboard for gaming",
+          isFavorite: false,
+        },
+        userId: 1,
+        file: {
+          fileURL: "asdf.jpg",
+        },
       };
-      const result = {
-        name: "AsusRog Motherboard",
-        type: "Motherboard",
-        price: 199.99,
-        mainImage:
-          "https://www.muycomputer.com/wp-content/uploads/2015/02/placabase_2.jpg",
-        alterImage:
-          "https://static-geektopia.com/storage/t/p/540/54025/816x381/file-270fa1...",
-        brand: "Asus Rog",
-        description: "An amazing motherboard for gaming",
-        isFavorite: false,
-      };
+      const result = req.body;
       const res = mockResponse();
+      const next = jest.fn();
 
       Component.create = jest.fn().mockResolvedValue(result);
-      await addComponent(req, res, null);
+
+      await addComponent(req, res, next);
 
       expect(res.json).toHaveBeenCalledWith(result);
     });
@@ -255,7 +252,7 @@ describe("Given a deleteComponent function", () => {
         },
       };
       const res = {
-        json: () => {},
+        json: jest.fn(),
       };
       Component.findByIdAndDelete = jest.fn().mockResolvedValue({});
 
@@ -273,6 +270,7 @@ describe("Given a updateComponent function", () => {
         params: {
           idComponent,
         },
+        file: { fileURL: "asdf.jpg" },
       };
       const next = jest.fn();
       const error: { code: number; message: string } = {
@@ -296,6 +294,7 @@ describe("Given a updateComponent function", () => {
         params: {
           idComponent,
         },
+        file: { fileURL: "asdf.jpg" },
       };
       const next = jest.fn();
       const error: { code: number; message: string } = {
@@ -319,6 +318,7 @@ describe("Given a updateComponent function", () => {
         params: {
           idComponent,
         },
+        file: { fileURL: "asdf.jpg" },
       };
       const res = mockResponse();
       Component.findByIdAndUpdate = jest.fn().mockResolvedValue(idComponent);
