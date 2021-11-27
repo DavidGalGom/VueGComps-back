@@ -70,3 +70,26 @@ describe("Given a /components endpoint", () => {
     });
   });
 });
+
+describe("Given a /components/:idComponent endpoint", () => {
+  describe("When it receives a GET request", () => {
+    test("Then it should send a response with the component", async () => {
+      const { body } = await request
+        .get("/components/619ba9ca8335600761d52e14")
+        .expect(200);
+      expect(body).toEqual({
+        id: "619ba9ca8335600761d52e14",
+        name: "AsusRog Motherboard",
+        type: "Motherboard",
+        price: 199.99,
+        mainImage:
+          "https://www.muycomputer.com/wp-content/uploads/2015/02/placabase_2.jpg",
+        alterImage:
+          "https://static-geektopia.com/storage/t/p/540/54025/816x381/file-270fa1...",
+        brand: "Asus Rog",
+        description: "An amazing motherboard for gaming",
+        isFavorite: false,
+      });
+    });
+  });
+});
