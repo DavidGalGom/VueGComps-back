@@ -22,9 +22,9 @@ router.post(
   "/",
   auth,
   adminAuth,
-  validate(componentSchema),
   upload.single("mainImage"),
   firebase,
+  validate(componentSchema),
   addComponent
 );
 router.delete("/:idComponent", auth, adminAuth, deleteComponent);

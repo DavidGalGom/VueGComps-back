@@ -1,4 +1,3 @@
-// import { ValidationError } from "express-validation";
 import { notFoundErrorHandler, generalErrorHandler } from "./error";
 import IResponseTest from "../../interfaces/response";
 import IError from "../../interfaces/error";
