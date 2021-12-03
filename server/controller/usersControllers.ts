@@ -66,6 +66,7 @@ export const loginUser = async (req, res, next) => {
           isAdmin: user.isAdmin,
           image: user.image,
           id: user.id,
+          components: user.components,
         },
         process.env.TOKEN,
         {
