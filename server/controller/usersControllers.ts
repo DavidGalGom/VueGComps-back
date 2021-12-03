@@ -65,6 +65,7 @@ export const loginUser = async (req, res, next) => {
           age: user.age,
           isAdmin: user.isAdmin,
           image: user.image,
+          id: user.id,
         },
         process.env.TOKEN,
         {
